@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('players', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('team_id')->constrained('teams');
             $table->string('name');
-            $table->string('logo')->nullable();
-            $table->year('founded_year');
-            $table->text('headquarters_address');
-            $table->string('headquarters_city');
+            $table->integer('height');
+            $table->integer('weight');
+            $table->enum('position', ['penyerang', 'gelandang', 'bertahan', 'penjaga_gawang']);
+            $table->integer('jersey_number');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['team_id', 'jersey_number']);
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teams');
+        Schema::dropIfExists('players');
     }
 };
