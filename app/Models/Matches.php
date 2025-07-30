@@ -10,6 +10,8 @@ class Matches extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'matches';
+
     protected $fillable = [
         'match_date',
         'match_time',
@@ -22,7 +24,9 @@ class Matches extends Model
 
     protected $casts = [
         'match_date' => 'date',
-        'match_time' => 'datetime:H:i'
+        'match_time' => 'datetime:H:i',
+        'home_score' => 'integer',
+        'away_score' => 'integer'
     ];
 
     public function homeTeam()
@@ -37,15 +41,6 @@ class Matches extends Model
 
     public function goals()
     {
-        return $this->hasMany(Goal::class);
-    }
-
-    public function getWinnerAttribute()
-    {
-        if ($this->status !== 'completed') return null;
-
-        if ($this->home_score > $this->away_score) return 'home';
-        if ($this->away_score > $this->home_score) return 'away';
-        return 'draw';
+        return $this->hasMany(Goal::class, 'match_id');
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Goal extends Model
 {
@@ -16,13 +16,17 @@ class Goal extends Model
         'minute'
     ];
 
+    protected $casts = [
+        'minute' => 'integer'
+    ];
+
     public function match()
     {
-        return $this->belongsTo(Matches::class);
+        return $this->belongsTo(Matches::class, 'match_id');
     }
 
     public function player()
     {
-        return $this->belongsTo(Player::class);
+        return $this->belongsTo(Player::class, 'player_id');
     }
 }
